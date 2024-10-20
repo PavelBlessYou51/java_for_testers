@@ -34,16 +34,10 @@ public class GroupRemovalTests {
         }
         if (!isElementPresent(By.name("selected[]"))) {
             driver.findElement(By.name("new")).click();
-            driver.findElement(By.name("group_name")).click();
             driver.findElement(By.name("group_name")).sendKeys("TestJava");
-            driver.findElement(By.name("group_header")).click();
             driver.findElement(By.name("group_header")).sendKeys("GroupHeader");
-            driver.findElement(By.name("group_footer")).click();
             driver.findElement(By.name("group_footer")).sendKeys("GroupFooter");
             driver.findElement(By.name("submit")).click();
-            driver.findElement(By.linkText("home")).click();
-            driver.findElement(By.linkText("groups")).click();
-            driver.findElement(By.cssSelector("body")).click();
         }
         driver.findElement(By.name("selected[]")).click();
         driver.findElement(By.name("delete")).click();
