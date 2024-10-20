@@ -1,13 +1,19 @@
-import java.io.File;
-
 public class Hello {
     public static void main(String[] args) {
+        var x = 1;
+        var y = 0;
+        if (y == 0) {
+            System.out.println("DIvision by zero is not allowed");
+        } else {
+            var z = devide(x, y);
+            System.out.println("Hello world!");
+        }
 
-        System.out.println("Hello world!");
-        var configFile = new File("sandbox/build.gradle"); // создает объект файла
-        System.out.println(configFile.getAbsolutePath());
-        System.out.println(configFile.exists());
+    }
 
+    private static int devide(int x, int y) {
+        var z = x / y;
+        return z;
     }
 
 
