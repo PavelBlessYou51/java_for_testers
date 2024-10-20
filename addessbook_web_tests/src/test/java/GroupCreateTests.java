@@ -24,6 +24,8 @@ public class GroupCreateTests {
     }
 
 
+
+
     @Test
     public void canCreateGroup() {
         if (!isElementPresent(By.name("new"))) {
