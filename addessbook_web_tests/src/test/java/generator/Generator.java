@@ -8,6 +8,7 @@ import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLMapper;
 import common.CommonFunctions;
 import model.GroupData;
+import model.RecordData;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -49,14 +50,21 @@ public class Generator {
         if ("groups".equals(type)) {
             return generateGroups();
         } else if ("contacts".equals(type)) {
-            return generateContancts();
+            return generateRecords();
         } else {
             throw new IllegalArgumentException("Unknown type of data " + type);
         }
     }
 
-    private Object generateContancts() {
-        return null;
+    private Object generateRecords() {
+        ArrayList<RecordData> records = new ArrayList<>();
+        for (int i = 0; i < 8; i++) {
+            records.add(new RecordData()
+                    .withFirstName(CommonFunctions.randomString(i * 10))
+                    .withLastName(CommonFunctions.randomString(i * 10))
+            );
+        }
+        return records;
     }
 
     private Object generateGroups() {

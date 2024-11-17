@@ -34,16 +34,16 @@ public class GroupCreateTests extends TestBase {
                 }
             }
         }
-        var json = "";
-        try (var reader = new FileReader("groups.json");
-             var breader = new BufferedReader(reader)
-        ) {
-            var line = breader.readLine();
-            while (line != null) {
-                json = json + line;
-                line = breader.readLine();
-            }
-        }
+//        var json = "";
+//        try (var reader = new FileReader("groups.json");
+//             var breader = new BufferedReader(reader)
+//        ) {
+//            var line = breader.readLine();
+//            while (line != null) {
+//                json = json + line;
+//                line = breader.readLine();
+//            }
+//        }
 //        var json = Files.readString(Paths.get("groups.json")); более короткий способ аналогичен коду выше
         ObjectMapper mapper = new XmlMapper();
         var value = mapper.readValue(new File("groups.xml"), new TypeReference<List<GroupData>>() {});
