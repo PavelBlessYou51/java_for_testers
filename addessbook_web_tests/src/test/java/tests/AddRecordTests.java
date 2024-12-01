@@ -1,8 +1,10 @@
 package tests;
 
 import common.CommonFunctions;
+import model.GroupData;
 import model.RecordData;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
@@ -43,4 +45,23 @@ public class AddRecordTests extends TestBase {
 
         app.records().addNewRecord(record);
     }
+
+    @Test
+    void canCreateRecordInGroup() {
+        RecordData record = new RecordData()
+                .withFirstName(CommonFunctions.randomString(10))
+                .withLastName(CommonFunctions.randomString(10))
+                .withPhoto(randomFile("src/test/resources/images"));
+        if (app.hbm().getGroupCount() == 0) {
+            app.hbm().createGroup(new GroupData("", "group name", "group header", "group footer"));
+        }
+        var group = app.hbm().getGroupList().get(0);
+        var oldRelated = app.hbm().getContactsInGroup(group);
+        app.records().createNewRecord(record, group);
+        var newRelated = app.hbm().getContactsInGroup(group);
+        Assertions.assertEquals(oldRelated.size() + 1, newRelated.size());
+    }
+
+
+    
 }

@@ -57,29 +57,41 @@ public class GroupCreateTests extends TestBase {
         return result;
     }
 
+    public static List<GroupData> singleRandomGroup() {
+        return List.of(new GroupData()
+                .withName(CommonFunctions.randomString(10))
+                .withHeader(CommonFunctions.randomString(20))
+                .withFooter(CommonFunctions.randomString(30)));
+    }
+
 
     @ParameterizedTest
-    @MethodSource("groupProvider")
-    public void canCreateMultipalyGroups(GroupData group) {
-        var oldGroups = app.groups().getList();
-        app.groups().createGroup(group);
-        var newGroups = app.groups().getList();
+    @MethodSource("singleRandomGroup")
+    public void canCreateGroup(GroupData group) {
+        var oldGroups = app.hbm().getGroupList();
+        app.hbm().createGroup(new GroupData(group.id(), group.name(), group.header(), group.footer()));
+        var newGroups = app.hbm().getGroupList();
         Comparator<GroupData> compareById = (o1, o2) -> {
             return Integer.compare(Integer.parseInt(o1.id()), Integer.parseInt(o2.id()));
         };
         newGroups.sort(compareById);
+        String maxId = newGroups.get(newGroups.size() - 1).id();
         var expectedList = new ArrayList<>(oldGroups);
-        expectedList.add(group.withId(newGroups.get(newGroups.size() - 1).id()).withHeader("").withFooter(""));
+        expectedList.add(group.withId(maxId));
         expectedList.sort(compareById);
         Assertions.assertEquals(newGroups, expectedList);
+
+        List<GroupData> newUiGroups = app.groups().getList();
+        newUiGroups.sort(compareById);
+        Assertions.assertEquals(newGroups, newUiGroups);
     }
 
     @ParameterizedTest
     @MethodSource("negativeGroupProvider")
     public void canNotCreateGroup(GroupData group) {
-        var oldGroups = app.groups().getList();
-        app.groups().createGroup(group);
-        var newGroups = app.groups().getList();
+        var oldGroups = app.hbm().getGroupList();
+        app.hbm().createGroup(new GroupData("", "group name", "group header", "group footer"));
+        var newGroups = app.hbm().getGroupList();
         Assertions.assertEquals(newGroups, oldGroups);
     }
 }

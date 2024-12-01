@@ -1,8 +1,10 @@
 package manager;
 
+import model.GroupData;
 import model.RecordData;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.Select;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,6 +21,19 @@ public class RecordHelper extends HelperBase {
         fillRecordForm(record);
         submitRecordCreation();
         returnToHomePage();
+    }
+
+    public void createNewRecord(RecordData record, GroupData group) {
+        initRecordCreation();
+        fillRecordForm(record);
+        selectGroup(group);
+        submitRecordCreation();
+        returnToHomePage();
+    }
+
+    private void selectGroup(GroupData group) {
+        new Select(manager.driver.findElement(By.name("new_group"))).selectByValue(group.id());
+
     }
 
     public void removeRecord(RecordData record) {

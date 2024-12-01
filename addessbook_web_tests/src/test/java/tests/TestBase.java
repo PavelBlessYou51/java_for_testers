@@ -1,6 +1,7 @@
 package tests;
 
 import manager.ApplicationManager;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 
 import java.io.File;
@@ -35,6 +36,11 @@ public class TestBase {
         return Paths.get(dir, fileNames[index]).toString();
 
 
+    }
+
+    @AfterEach
+    void checkDatabaseConsistency() {
+        app.jdbc().checkConsistency();
     }
 
 

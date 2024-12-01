@@ -2,6 +2,7 @@ package manager;
 
 import model.GroupData;
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -102,14 +103,24 @@ public class GroupHelper extends HelperBase {
 
     public List<GroupData> getList() {
         openGroupsPage();
-        var groups = new ArrayList<GroupData>();
-        var spans = manager.driver.findElements(By.cssSelector("span.group"));
-        for (var span : spans) {
-            var name = span.getText();
-            var checkbox = span.findElement(By.name("selected[]"));
-            var id = checkbox.getAttribute("value");
-            groups.add(new GroupData().withId(id).withName(name));
+        ArrayList<GroupData> groups = new ArrayList<>();
+        int spanCount = manager.driver.findElements(By.cssSelector("span.group")).size();
+        for (int i = 0; i < spanCount; i++) {
+            List<WebElement> spans = manager.driver.findElements(By.cssSelector("span.group"));
+            String name = spans.get(i).getText();
+            WebElement checkbox = spans.get(i).findElement(By.name("selected[]"));
+            String id = checkbox.getAttribute("value");
+            checkbox.click();
+            initGroupModification();
+            String header = manager.driver.findElement(By.cssSelector("textarea[name='group_header']")).getText();
+            String footer = manager.driver.findElement(By.cssSelector("textarea[name='group_footer']")).getText();
+            openGroupsPage();
+            groups.add(new GroupData().withId(id).withName(name).withHeader(header).withFooter(footer));
         }
         return groups;
+    }
+
+    private void initGroupModification() {
+        click(By.name("edit"));
     }
 }
